@@ -1,0 +1,54 @@
+rule_files:
+  - './ovp-metrics-rules.yml'
+
+evaluation_interval: '1m'
+
+tests:
+  - interval: '1m'
+    input_series:
+      - series: 'z_application_latency_seconds_bucket{le="0.5"}'
+        values: 60 120 180
+      - series: 'z_application_latency_seconds_bucket{le="1.0"}'
+        values: 120 240 360
+      - series: 'z_application_latency_seconds_bucket{le="1.5"}'
+        values: 180 360 540
+      - series: 'z_application_latency_seconds_bucket{le="2.0"}'
+        values: 240 480 720
+      - series: 'z_application_latency_seconds_bucket{le="+Inf"}'
+        values: 240 480 720
+    promql_expr_test:
+      - eval_time: '1m'
+        expr: 'sum(rate(z_application_latency_seconds_bucket{le="0.5"}[1m]))'
+        exp_samples:
+          - labels: '{}'
+            value: 1
+      - eval_time: '1m'
+        expr: 'sum(rate(z_application_latency_seconds_bucket{le="1.0"}[1m]))'
+        exp_samples:
+          - labels: '{}'
+            value: 2
+      - eval_time: '1m'
+        expr: 'sum(rate(z_application_latency_seconds_bucket{le="1.5"}[1m]))'
+        exp_samples:
+          - labels: '{}'
+            value: 3
+      - eval_time: '1m'
+        expr: 'sum(rate(z_application_latency_seconds_bucket{le="2.0"}[1m]))'
+        exp_samples:
+          - labels: '{}'
+            value: 4
+      - eval_time: '1m'
+        expr: 'application_latency_50'
+        exp_samples:
+          - labels: 'application_latency_50'
+            value: 1
+      - eval_time: '1m'
+        expr: 'application_latency_98'
+        exp_samples:
+          - labels: 'application_latency_98'
+            value: 1.96
+      - eval_time: '1m'
+        expr: 'application_response_rate'
+        exp_samples:
+          - labels: 'application_response_rate'
+            value: 4

@@ -1,0 +1,49 @@
+rule_files:
+  - 'instance-health-rules.yml'
+
+tests:
+  - interval: '1m'
+    input_series:
+      - series: 'up{application="a1",datacenter="d1",environment="e1",instance="i1"}'
+        values: 1 1 1 1 0 0 0 0 0 1 1 1
+      - series: 'up{application="a1",datacenter="d1",environment="e2",instance="i1"}'
+        values: 1 1 1 1 0 0 0 0 0 1 1 1
+      - series: 'up{application="a1",datacenter="d2",environment="e1",instance="i1"}'
+        values: 1 1 1 1 0 0 0 0 0 1 1 1
+    alert_rule_test:
+      - eval_time: '3m'
+        alertname: 'Instance_Down'
+        exp_alerts: []
+      - eval_time: '7m'
+        alertname: 'Instance_Down'
+        exp_alerts:
+          - exp_labels:
+              environment: 'e1'
+              application: 'a1'
+              datacenter: 'd1'
+              instance: 'i1'
+              severity: 'major'
+            exp_annotations:
+              description: 'An instance is down'
+              summary: 'app: a1 | instance: i1 | env: e1 | dc: d1'
+          - exp_labels:
+              environment: 'e2'
+              application: 'a1'
+              datacenter: 'd1'
+              instance: 'i1'
+              severity: 'major'
+            exp_annotations:
+              description: 'An instance is down'
+              summary: 'app: a1 | instance: i1 | env: e2 | dc: d1'
+          - exp_labels:
+              environment: 'e1'
+              application: 'a1'
+              datacenter: 'd2'
+              instance: 'i1'
+              severity: 'major'
+            exp_annotations:
+              description: 'An instance is down'
+              summary: 'app: a1 | instance: i1 | env: e1 | dc: d2'
+      - eval_time: '11m'
+        alertname: 'Instance_Down'
+        exp_alerts: []

@@ -1,0 +1,28 @@
+rule_files:
+  - 'errors-rules.yml'
+
+tests:
+  - interval: '1m'
+    input_series:
+      - series: 'response_count{status="2XX"}'
+        values: 0+100x2 300+80x2 460+70x3 
+      - series: 'response_count{status="4XX"}'
+        values: 0+0x2 0+20x6  
+      - series: 'response_count{status="5XX"}'
+        values: 0+0x5 0+10x3
+    alert_rule_test:
+      - eval_time: '1m'
+        alertname: 'High_Error_Rate'
+        exp_alerts: []
+      - eval_time: '4m'
+        alertname: 'High_Error_Rate'
+        exp_alerts: []
+      - eval_time: '9m'
+        alertname: 'High_Error_Rate'
+        exp_alerts:
+          - exp_labels:
+              severity: 'major'
+            exp_annotations:
+              description: 'Error rate is high'
+              summary: '30%'
+

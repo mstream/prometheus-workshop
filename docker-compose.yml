@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  alertmanager:
+    image: 'prom/alertmanager:v0.23.0'
+    ports:
+      - 9093:9093
+  prometheus:
+    image: 'local/prometheus:1.0'
+    ports:
+      - 9090:9090
+  service:
+    image: 'local/service:1.0'
+    ports:
+      - 8080:8080

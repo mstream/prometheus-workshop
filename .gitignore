@@ -1,0 +1,3 @@
+/rules/alerts/errors-rules.yml
+/rules/alerts/instance-health-rules.yml
+/rules/recording/ovp-metrics-rules.yml
