@@ -3,7 +3,7 @@
 ## Requirements
 
 | software name | recommended version |
-| --- |
+| --- | --- |
 | docker | 20.10.12 |
 | docker-compose| 1.29.2 |
 
