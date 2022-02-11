@@ -12,11 +12,30 @@ recommended versions have been proven to work.
 
 ## Instructions
 
-Execute `./run.sh` command to run unit tests and start up prometheus,
+Execute `./run.sh -f` command to and start up prometheus,
 alertmanager and a mock service containers.
 
+Execute `./run.sh` to do the same but additionally check the test 
+results beforehand.
+
+The mock server will provide some dummy metrics that you can test your
+[promql](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+expressions against.
 
 ## Tasks
+
+In the `rules` directory you will find various 
+[test](https://prometheus.io/docs/prometheus/latest/configuration/unit_testing_rules/) 
+files. 
+To make them pass, you have to provide appropriate 
+[recording rules](https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/) 
+or 
+[alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 
+which configure
+the expected behaviour. That rule file has have a specific name. If
+the test file's path is, for example, `rules/alerts/some-alert.test.yml`
+then the rule file's path should be `rules/alerts/some-alert.yml`.
+
 
 ### Implement an alert based on service availability
 
