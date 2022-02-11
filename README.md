@@ -1,10 +1,19 @@
 # Prometheus Workshop
 
+## Requirements
+
+| software name | recommended version |
+| --- |
+| docker | 20.10.12 |
+| docker-compose| 1.29.2 |
+
+The versions of the software does not have to match exactly. However,
+recommended versions have been proven to work.
 
 ## Instructions
 
 Execute `./run.sh` command to run unit tests and start up prometheus,
-alertmanager and a mock serice containers.
+alertmanager and a mock service containers.
 
 
 ## Tasks
